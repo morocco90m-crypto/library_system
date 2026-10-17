@@ -1,0 +1,18 @@
+[
+    {
+        "id": "BR1",
+        "user_id": "S1",
+        "book_id": "B4",
+        "borrow_date": "2026-10-17",
+        "due_date": "2026-10-31",
+        "return_date": null
+    },
+    {
+        "id": "BR2",
+        "user_id": "S1",
+        "book_id": "B1",
+        "borrow_date": "2026-10-17",
+        "due_date": "2026-10-31",
+        "return_date": null
+    }
+]

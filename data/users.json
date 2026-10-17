@@ -1,0 +1,26 @@
+[
+    {
+        "id": "S1",
+        "name": "Ali Hassan",
+        "email": "ali@mail.com",
+        "user_type": "Student",
+        "max_books_allowed": 5,
+        "borrowing_period": 14
+    },
+    {
+        "id": "S3",
+        "name": "Mona Adel",
+        "email": "mona@mail.com",
+        "user_type": "Student",
+        "max_books_allowed": 5,
+        "borrowing_period": 14
+    },
+    {
+        "id": "T1",
+        "name": "Dr Sara",
+        "email": "sara@mail.com",
+        "user_type": "Teacher",
+        "max_books_allowed": 10,
+        "borrowing_period": 30
+    }
+]

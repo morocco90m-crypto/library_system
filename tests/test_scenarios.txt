@@ -1,0 +1,128 @@
+LIBRARY MANAGEMENT SYSTEM - TEST SCENARIOS
+==========================================
+
+How to run the tests
+--------------------
+1. Delete the "data" folder (if it exists).
+2. Run:  python seed_data.py     (adds sample data)
+3. Run:  python main.py          (opens the application)
+4. Run the scenarios below IN ORDER, then write PASS or FAIL in the Status line.
+
+Sample data after step 2
+------------------------
+Books  : B1 Palace Walk (3 copies)        B2 Sugar Street (2 copies)
+         B3 A Brief History of Time (2)   B4 The Universe in a Nutshell (1)
+         B5 1984 (4)                      B6 Animal Farm (2)
+Users  : S1 Ali Hassan (Student)   S2 Mona Samir (Student)
+         S3 Omar Khaled (Student)  T1 Dr. Sara Adel (Teacher)
+Active borrowings: S1 has B1, S2 has B4, T1 has B3
+Limits : Student max 5 books / 14 days, Teacher max 10 books / 30 days
+
+Total: 11 scenarios
+  3 successful, 3 invalid input, 3 business-rule violations, 2 edge cases
+
+
+------------------------------------------------------------
+A) SUCCESSFUL SCENARIOS
+------------------------------------------------------------
+
+Test 1 - Add a book
+  Steps   : Books tab. Fill Book ID = B7, Title = Test Book, Author = Someone,
+            Category = Novel, Copies = 2. Click Add.
+  Expected: Message "Book added successfully". The book appears in the table
+            with "2 / 2". Dashboard Total Books becomes 7.
+  Status  : ______
+
+Test 2 - Borrow an available book
+  Steps   : Borrow / Return tab. User = S2 - Mona Samir, Book = B2 - Sugar Street.
+            Click Borrow.
+  Expected: Message "Book borrowed successfully". A new Active borrowing appears.
+            In the Books tab, Sugar Street shows "1 / 2".
+  Status  : ______
+
+Test 3 - Return a borrowed book
+  Steps   : Borrow / Return tab. User = S2 - Mona Samir, Book = B2 - Sugar Street.
+            Click Return. Then set Show = Returned.
+  Expected: Message "Book returned successfully". The borrowing appears with
+            status Returned. Sugar Street shows "2 / 2" again.
+  Status  : ______
+
+
+------------------------------------------------------------
+B) INVALID INPUT SCENARIOS
+------------------------------------------------------------
+
+Test 4 - Copies is not a number
+  Steps   : Books tab. Book ID = B8, Title = X, Author = Y, Category = Z,
+            Copies = abc. Click Add.
+  Expected: Error "Copies must be a number". No book is added.
+  Status  : ______
+
+Test 5 - Email without @
+  Steps   : Users tab. User ID = S9, Name = Test, Email = abc, Type = Student.
+            Click Add User.
+  Expected: Error "Invalid email address". No user is added.
+  Status  : ______
+
+Test 6 - Empty title
+  Steps   : Books tab. Book ID = B8, Title = (empty), Author = Y, Category = Z,
+            Copies = 1. Click Add.
+  Expected: Error "Book ID, title, author and category are required".
+            No book is added.
+  Status  : ______
+
+
+------------------------------------------------------------
+C) BUSINESS RULE VIOLATIONS
+------------------------------------------------------------
+
+Test 7 - Borrow a book with no available copies
+  Steps   : Borrow / Return tab. User = S3 - Omar Khaled,
+            Book = B4 - The Universe in a Nutshell (its only copy is borrowed
+            by S2). Click Borrow.
+  Expected: Error "No copies available to borrow." Nothing changes.
+  Status  : ______
+
+Test 8 - Borrow the same book twice
+  Steps   : Borrow / Return tab. User = S1 - Ali Hassan, Book = B1 - Palace Walk
+            (S1 already has it). Click Borrow.
+  Expected: Error "User already borrowed this book." Nothing changes.
+  Status  : ______
+
+Test 9 - Exceed the maximum borrowing limit
+  Steps   : (Run Test 10 first, so S3 already has 5 books.)
+            Borrow / Return tab. User = S3 - Omar Khaled, Book = B7 - Test Book.
+            Click Borrow.
+  Expected: Error "Borrow limit reached." Nothing changes.
+  Status  : ______
+
+
+------------------------------------------------------------
+D) EDGE CASES
+------------------------------------------------------------
+
+Test 10 - Borrow exactly up to the limit (5 books)
+  Steps   : Borrow / Return tab. User = S3 - Omar Khaled. Borrow these books one
+            by one: B1, B2, B3, B5, B6.
+  Expected: All five borrows succeed (the 5th is exactly at the student limit).
+            In the Users tab, S3 shows Max Books = 5.
+  Status  : ______
+
+Test 11 - Borrow the last copy of a book, then return it
+  Steps   : (a) Borrow / Return tab: S2 returns B4.
+            (b) Books tab: B4 shows "1 / 1". Filter = Unavailable does not
+                list it.
+            (c) S1 borrows B4 (the last copy).
+            (d) Books tab: B4 shows "0 / 1" and now appears under
+                Filter = Unavailable.
+  Expected: The copies counter and the Available/Unavailable filter follow
+            every step correctly.
+  Status  : ______
+
+
+------------------------------------------------------------
+BONUS CHECK - saving and loading
+------------------------------------------------------------
+After the scenarios, close the window and run python main.py again.
+Expected: all books, users and borrowings are still there
+(they were saved in data/books.json, data/users.json, data/borrowings.json).
